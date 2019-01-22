@@ -26,6 +26,36 @@
 
 **链接**，略过。
 
-**初始化**，为标记为常量值的字段赋值，以及执行 <clint>  方法
+**初始化**，为标记为常量值的字段赋值，以及执行 < clint >  方法。在java中，被static final 修饰的字段，且其类型为基本类型或字符串时，称为常量值（ConstantValue），常量值的赋值操作，由java虚拟机直接完成；除此之外的直接赋值操作，以及所有静态代码块中的代码，则会被放入< clint >  方法中。
 
-在java中，被static final 修饰的字段，且其类型为基本类型或字符串时，称为常量值（ConstantValue），常量值的赋值操作，由java虚拟机直接完成;
+类的初始化时间：
+
+​	1.当虚拟机启动时，初始化用户指定的主类；
+
+​	2.new 实例时，初始化new的目标类；
+
+​	3.访问静态方法或静态字段时，初始化静态方法或静态字段所在的类；
+
+​	4.子类的初始化会触发父类的初始化；
+
+​	5.如果一个接口定义了default 方法，那么直接或者间接实现该接口的类的初始化，也会触发该接口的初始化；
+
+​	6.对某个类进行反射调用时，会触发该类的初始化；
+
+​	7.当初次调用MethodHandle实例时，会初始化该MethodHandle指向的方法所在的类。
+
+```java
+public class Singleton{
+    private SingleTon(){}
+    private static class LazyHolder{
+        static final SingleTon INSTANCE = new SingleTon();
+    }
+    public static SingleTon getInstance(){
+        return LazyHolder.INSTANCE;
+    }
+}
+```
+
+上面的代码，只有当调用SingleTon.getInstance 方法时，程序才会访问LazyHolder.INSTANCE，才会触发对LazyHolder的初始化，才会新建一个Singleton的实例。
+
+类的初始化时线程安全的，且仅会被执行一次，因此程序可以保证多线程下的Singleton的单例。
