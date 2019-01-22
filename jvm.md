@@ -59,3 +59,24 @@ public class Singleton{
 上面的代码，只有当调用SingleTon.getInstance 方法时，程序才会访问LazyHolder.INSTANCE，才会触发对LazyHolder的初始化，才会新建一个Singleton的实例。
 
 类的初始化时线程安全的，且仅会被执行一次，因此程序可以保证多线程下的Singleton的单例。
+
+## java异常机制
+
+java异常类：
+
+![](C:\Users\Administrator\Desktop\异常.jpg)
+
+### try-with-resource语法
+
+```java
+public static void main(String[] args) {
+    try (FileInputStream inputStream = new FileInputStream(new File("test"))) {
+        System.out.println(inputStream.read());
+    } catch (IOException e) {
+        throw new RuntimeException(e.getMessage(), e);
+    }
+}
+```
+
+1.catch 块中，看不到 try-with-recourse 声明中的变量。
+2.try-with-recourse 中，try 块中抛出的异常，在 e.getMessage() 可以获得，而调用 close() 方法抛出的异常在3.e.getSuppressed() 获得。try-with-recourse 中定义多个变量时，由反编译可知，关闭的顺序是从后往前。
